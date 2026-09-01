@@ -1,0 +1,1 @@
+console.log("Capstone project started!");
