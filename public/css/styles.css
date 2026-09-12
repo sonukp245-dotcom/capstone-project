@@ -1,0 +1,122 @@
+:root {
+  color-scheme: light;
+  --text: #1a1a1a;
+  --muted: #4a4a4a;
+  --border: #c5c5c5;
+  --focus: #005fcc;
+  --error: #9b1b1b;
+  --success: #0f5c2e;
+  --success-bg: #e7f6ec;
+  --error-bg: #fdeeee;
+  --page: #f4f4f4;
+  --card: #ffffff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--page);
+}
+
+main {
+  max-width: 32rem;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+}
+
+.intro {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+}
+
+.form-status {
+  min-height: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-status:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.form-status.success {
+  padding: 0.75rem;
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid var(--success);
+  border-radius: 4px;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+input:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+input[aria-invalid="true"] {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.field-error {
+  min-height: 1.25rem;
+  margin: 0.35rem 0 0;
+  color: var(--error);
+  font-size: 0.95rem;
+}
+
+button {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: #1a1a1a;
+  border: 2px solid #1a1a1a;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button:hover,
+button:hover:focus {
+  background: #333;
+}
