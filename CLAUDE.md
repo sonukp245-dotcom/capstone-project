@@ -30,3 +30,10 @@ Examples:
 - Do not modify unrelated files.
 - Keep changes simple and maintainable.
 - Follow the project's existing coding conventions.
+- ## AI Development Workflow Rules
+
+1. **Inspect before modifying:** Before changing code, inspect the existing project structure and relevant files. Do not modify unrelated files.
+
+2. **Use explicit requirements:** For feature work, define the goal, constraints, validation rules, accessibility expectations, and testing criteria before implementation.
+
+3. **Verify AI-generated code:** Run the relevant tests after implementation. If a test fails, inspect the failure, fix the underlying issue, and rerun the tests before considering the work complete.
