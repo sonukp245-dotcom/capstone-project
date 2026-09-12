@@ -1,66 +1,52 @@
 :root {
   color-scheme: light;
-  --text: #1a1a1a;
-  --muted: #4a4a4a;
-  --border: #c5c5c5;
-  --focus: #005fcc;
-  --error: #9b1b1b;
-  --success: #0f5c2e;
-  --success-bg: #e7f6ec;
-  --error-bg: #fdeeee;
-  --page: #f4f4f4;
-  --card: #ffffff;
+  --bg: #f4f1ea;
+  --card: #fffdf8;
+  --text: #1f1b16;
+  --muted: #5c564e;
+  --border: #d9d1c4;
+  --accent: #2f5d50;
+  --accent-hover: #24483e;
+  --error: #9b2c2c;
+  --success: #276749;
 }
 
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--bg);
   color: var(--text);
-  background: var(--page);
 }
 
-main {
-  max-width: 32rem;
-  margin: 2rem auto;
-  padding: 1.5rem;
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 28rem;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
+  padding: 1.75rem;
 }
 
 h1 {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.35rem;
   font-size: 1.75rem;
 }
 
-.intro {
-  margin: 0 0 1.25rem;
+.subtitle {
+  margin: 0 0 1.5rem;
   color: var(--muted);
-}
-
-.form-status {
-  min-height: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.form-status:focus {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
-}
-
-.form-status.success {
-  padding: 0.75rem;
-  color: var(--success);
-  background: var(--success-bg);
-  border: 1px solid var(--success);
-  border-radius: 4px;
 }
 
 .field {
@@ -70,53 +56,58 @@ h1 {
 label {
   display: block;
   margin-bottom: 0.35rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
-input {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
   width: 100%;
   padding: 0.6rem 0.7rem;
-  font: inherit;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
 }
 
-input:focus {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
-}
-
-input[aria-invalid="true"] {
+input.invalid,
+select.invalid {
   border-color: var(--error);
-  background: var(--error-bg);
 }
 
-.field-error {
-  min-height: 1.25rem;
-  margin: 0.35rem 0 0;
+.checkbox-field label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.error {
+  min-height: 1.1rem;
+  margin: 0.3rem 0 0;
   color: var(--error);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+}
+
+.success {
+  min-height: 1.2rem;
+  margin: 0 0 0.75rem;
+  color: var(--success);
 }
 
 button {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.7rem 1.1rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
   font: inherit;
   font-weight: 700;
-  color: #fff;
-  background: #1a1a1a;
-  border: 2px solid #1a1a1a;
-  border-radius: 4px;
   cursor: pointer;
 }
 
-button:focus {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
-}
-
-button:hover,
-button:hover:focus {
-  background: #333;
+button:hover {
+  background: var(--accent-hover);
 }

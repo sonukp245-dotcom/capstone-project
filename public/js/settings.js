@@ -1,175 +1,125 @@
-const SETTINGS_STORAGE_KEY = "userSettings";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SETTINGS_STORAGE_KEY = "capstoneUserSettings";
 
-function getSettingsFormValues(formData) {
-  return {
-    displayName: String(formData.displayName || "").trim(),
-    email: String(formData.email || "").trim(),
-    password: String(formData.password || ""),
-    confirmPassword: String(formData.confirmPassword || ""),
-  };
+const form = document.getElementById("settingsForm");
+const displayNameInput = document.getElementById("displayName");
+const emailInput = document.getElementById("email");
+const themeInput = document.getElementById("theme");
+const emailNotificationsInput = document.getElementById("emailNotifications");
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirmPassword");
+const formSuccess = document.getElementById("formSuccess");
+
+const fieldErrors = {
+  displayName: document.getElementById("displayNameError"),
+  email: document.getElementById("emailError"),
+  password: document.getElementById("passwordError"),
+  confirmPassword: document.getElementById("confirmPasswordError"),
+};
+
+function setFieldError(fieldName, message) {
+  const input = form.elements[fieldName];
+  const errorElement = fieldErrors[fieldName];
+
+  if (errorElement) {
+    errorElement.textContent = message;
+  }
+
+  if (input) {
+    input.classList.toggle("invalid", Boolean(message));
+  }
 }
 
-function validateSettings(formData) {
-  const values = getSettingsFormValues(formData);
-  const errors = {};
+function clearErrors() {
+  Object.keys(fieldErrors).forEach((fieldName) => {
+    setFieldError(fieldName, "");
+  });
+  formSuccess.textContent = "";
+}
 
-  if (!values.displayName) {
+function validateSettings(values) {
+  const errors = {};
+  const displayName = values.displayName.trim();
+  const email = values.email.trim();
+  const password = values.password;
+  const confirmPassword = values.confirmPassword;
+
+  if (!displayName) {
     errors.displayName = "Display name is required.";
-  } else if (values.displayName.length < 2) {
+  } else if (displayName.length < 2) {
     errors.displayName = "Display name must be at least 2 characters.";
   }
 
-  if (!values.email) {
+  if (!email) {
     errors.email = "Email is required.";
-  } else if (!EMAIL_PATTERN.test(values.email)) {
+  } else if (!EMAIL_PATTERN.test(email)) {
     errors.email = "Enter a valid email address.";
   }
 
-  if (values.password) {
-    if (values.password.length < 8) {
+  if (password || confirmPassword) {
+    if (password.length < 8) {
       errors.password = "Password must be at least 8 characters.";
     }
 
-    if (values.password !== values.confirmPassword) {
+    if (password !== confirmPassword) {
       errors.confirmPassword = "Passwords do not match.";
     }
-  } else if (values.confirmPassword) {
-    errors.confirmPassword = "Passwords do not match.";
   }
 
-  return {
-    isValid: Object.keys(errors).length === 0,
-    values,
-    errors,
-  };
+  return errors;
 }
 
 function loadSavedSettings() {
   try {
-    const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
-    if (!raw) {
-      return { displayName: "", email: "" };
+    const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (!savedSettings) {
+      return;
     }
 
-    const parsed = JSON.parse(raw);
-    return {
-      displayName: String(parsed.displayName || ""),
-      email: String(parsed.email || ""),
-    };
+    const settings = JSON.parse(savedSettings);
+    displayNameInput.value = settings.displayName || "";
+    emailInput.value = settings.email || "";
+    themeInput.value = settings.theme || "system";
+    emailNotificationsInput.checked = Boolean(settings.emailNotifications);
   } catch (error) {
-    return { displayName: "", email: "" };
+    console.warn("Could not load saved settings.", error);
   }
 }
 
-function saveNonSensitiveSettings(values) {
-  const settingsToStore = {
-    displayName: values.displayName,
-    email: values.email,
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  clearErrors();
+
+  const values = {
+    displayName: displayNameInput.value,
+    email: emailInput.value,
+    theme: themeInput.value,
+    emailNotifications: emailNotificationsInput.checked,
+    password: passwordInput.value,
+    confirmPassword: confirmPasswordInput.value,
   };
 
-  localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settingsToStore));
-}
+  const errors = validateSettings(values);
+  const errorFields = Object.keys(errors);
 
-const settingsApi = {
-  SETTINGS_STORAGE_KEY,
-  validateSettings,
-  loadSavedSettings,
-  saveNonSensitiveSettings,
-};
-
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = settingsApi;
-}
-
-if (typeof document !== "undefined") {
-  const form = document.getElementById("settings-form");
-
-  if (form) {
-    const displayNameInput = document.getElementById("display-name");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const confirmPasswordInput = document.getElementById("confirm-password");
-    const statusElement = document.getElementById("form-status");
-
-    const fieldMap = {
-      displayName: {
-        input: displayNameInput,
-        error: document.getElementById("display-name-error"),
-      },
-      email: {
-        input: emailInput,
-        error: document.getElementById("email-error"),
-      },
-      password: {
-        input: passwordInput,
-        error: document.getElementById("password-error"),
-      },
-      confirmPassword: {
-        input: confirmPasswordInput,
-        error: document.getElementById("confirm-password-error"),
-      },
-    };
-
-    function clearFieldErrors() {
-      Object.values(fieldMap).forEach(({ input, error }) => {
-        error.textContent = "";
-        error.removeAttribute("role");
-        input.removeAttribute("aria-invalid");
-      });
-    }
-
-    function showFieldErrors(errors) {
-      Object.entries(fieldMap).forEach(([fieldName, { input, error }]) => {
-        if (errors[fieldName]) {
-          error.textContent = errors[fieldName];
-          error.setAttribute("role", "alert");
-          input.setAttribute("aria-invalid", "true");
-        }
-      });
-    }
-
-    function focusFirstInvalidField(errors) {
-      const fieldOrder = ["displayName", "email", "password", "confirmPassword"];
-      const firstInvalid = fieldOrder.find((fieldName) => errors[fieldName]);
-      if (firstInvalid) {
-        fieldMap[firstInvalid].input.focus();
-      }
-    }
-
-    function populateForm() {
-      const saved = loadSavedSettings();
-      displayNameInput.value = saved.displayName;
-      emailInput.value = saved.email;
-    }
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      statusElement.textContent = "";
-      statusElement.classList.remove("success");
-      clearFieldErrors();
-
-      const result = validateSettings({
-        displayName: displayNameInput.value,
-        email: emailInput.value,
-        password: passwordInput.value,
-        confirmPassword: confirmPasswordInput.value,
-      });
-
-      if (!result.isValid) {
-        showFieldErrors(result.errors);
-        focusFirstInvalidField(result.errors);
-        return;
-      }
-
-      saveNonSensitiveSettings(result.values);
-      passwordInput.value = "";
-      confirmPasswordInput.value = "";
-      statusElement.classList.add("success");
-      statusElement.textContent = "Settings saved successfully.";
-      statusElement.focus();
+  if (errorFields.length > 0) {
+    errorFields.forEach((fieldName) => {
+      setFieldError(fieldName, errors[fieldName]);
     });
-
-    populateForm();
+    return;
   }
-}
+
+  const settingsToSave = {
+    displayName: values.displayName.trim(),
+    email: values.email.trim(),
+    theme: values.theme,
+    emailNotifications: values.emailNotifications,
+  };
+
+  localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settingsToSave));
+  passwordInput.value = "";
+  confirmPasswordInput.value = "";
+  formSuccess.textContent = "Settings saved.";
+});
+
+loadSavedSettings();
