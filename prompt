@@ -1,0 +1,43 @@
+Build a user settings form for this capstone project.
+
+Goal:
+Create a clean, responsive settings form that allows a user to update:
+1. Full name
+2. Email
+3. Password
+
+Requirements:
+- Use the existing project structure.
+- Inspect the current files before making changes.
+- Keep the implementation simple and beginner-friendly.
+- Use HTML, CSS, and vanilla JavaScript only unless the existing project already requires another approach.
+- Match the existing project's visual style where possible.
+- Make the form responsive on desktop and mobile.
+
+Validation:
+- Full name is required.
+- Email is required and must have a valid email format.
+- Password must be at least 8 characters.
+- Show clear validation messages near the relevant field.
+- Do not submit the form when validation fails.
+- Show a clear success message when all fields are valid.
+
+Accessibility:
+- Every input must have a label.
+- Use appropriate input types.
+- Make validation messages understandable.
+- Ensure the form can be used with keyboard navigation.
+
+Testing:
+Before finishing, test:
+1. Empty form submission.
+2. Invalid email.
+3. Password shorter than 8 characters.
+4. Valid form submission.
+5. Mobile/responsive layout.
+
+After implementation:
+- List the files changed.
+- Explain what was implemented.
+- Mention any assumptions made.
+- Do not modify unrelated files.

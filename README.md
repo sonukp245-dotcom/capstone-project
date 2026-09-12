@@ -11,7 +11,7 @@ This project is being developed as part of an AI-assisted development track.
 
 ## Getting Started
 
-This project is in an early stage. The current entry point is a Node.js script.
+This project includes a user settings form with client-side validation.
 
 **Requirements:** [Node.js](https://nodejs.org/) (LTS recommended)
 
@@ -21,11 +21,7 @@ cd capstone-project
 node src/index.js
 ```
 
-You should see:
-
-```text
-Capstone project started!
-```
+Open [http://localhost:3000](http://localhost:3000) to view the settings form.
 
 There is no `package.json` yet, so npm install or npm start is not required.
 
